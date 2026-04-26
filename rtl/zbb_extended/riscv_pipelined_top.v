@@ -6,7 +6,21 @@ module riscv_pipelined_top (
     output [31:0] pc_out,
     output [31:0] instr_out,
     output [31:0] alu_out,
-    output [31:0] wb_out
+    output [31:0] wb_out,
+
+    output reg [31:0] debug_x5,
+    output reg [31:0] debug_x6,
+    output reg [31:0] debug_x7,
+    output reg [31:0] debug_x8,
+    output reg [31:0] debug_x9,
+    output reg [31:0] debug_x10,
+    output reg [31:0] debug_x11,
+    output reg [31:0] debug_x12,
+    output reg [31:0] debug_x13,
+    output reg [31:0] debug_x14,
+    output reg [31:0] debug_x15,
+    output reg [31:0] debug_x16,
+    output reg [31:0] inst_count
 );
     // =========================================================
     // IF STAGE
@@ -100,6 +114,7 @@ module riscv_pipelined_top (
     // =========================================================
     wire stall_pipeline;
     reg flush_id_ex;
+    reg branch_taken_ex_r;
 
     hazard_unit HZU (
         .id_ex_mem_read(id_ex_mem_read),
@@ -270,13 +285,32 @@ module riscv_pipelined_top (
     reg [31:0] mem_wb_alu_result;
     reg [31:0] mem_wb_mem_data;
     reg [1:0]  mem_wb_wb_sel;
+    reg [2:0] mem_wb_funct3;
 
     // =========================================================
     // WB STAGE
     // =========================================================
+    // Byte/halfword selection for load instructions
+    // mem_wb_alu_result[1:0] gives the byte offset within the word
+    wire [31:0] mem_load_data;
+    wire [1:0]  load_byte_offset = mem_wb_alu_result[1:0];
+
+    assign mem_load_data =
+        (mem_wb_funct3 == 3'b000) ?                          // LB  (sign extend)
+            {{24{mem_wb_mem_data[load_byte_offset*8 +: 1]}},
+              mem_wb_mem_data[load_byte_offset*8 +: 8]}   :
+        (mem_wb_funct3 == 3'b100) ?                          // LBU (zero extend)
+            {24'b0, mem_wb_mem_data[load_byte_offset*8 +: 8]} :
+        (mem_wb_funct3 == 3'b001) ?                          // LH  (sign extend)
+            {{16{mem_wb_mem_data[load_byte_offset[1]*16 +: 1]}},
+              mem_wb_mem_data[load_byte_offset[1]*16 +: 16]} :
+        (mem_wb_funct3 == 3'b101) ?                          // LHU (zero extend)
+            {16'b0, mem_wb_mem_data[load_byte_offset[1]*16 +: 16]} :
+        mem_wb_mem_data;                                     // LW  (full word)
+
     assign wb_write_data =
         (mem_wb_wb_sel == 2'b00) ? mem_wb_alu_result :
-        (mem_wb_wb_sel == 2'b01) ? mem_wb_mem_data   :
+        (mem_wb_wb_sel == 2'b01) ? mem_load_data     :   // ← use byte-selected version
         (mem_wb_wb_sel == 2'b10) ? mem_wb_pc4        :
                                    32'd0;
 
@@ -342,14 +376,21 @@ module riscv_pipelined_top (
             mem_wb_rd        <= 5'd0;
             mem_wb_reg_write <= 1'b0;
             mem_wb_wb_sel    <= 2'b00;
+            mem_wb_funct3    <= 3'd0;   // ← ADD THIS LINE
+            
+            inst_count        <= 32'd0;
+            branch_taken_ex_r <= 1'b0;
         end else begin
+            // Registered branch: covers synchronous IMEM 1-cycle lag
+            branch_taken_ex_r <= branch_taken_ex;
+
             // -----------------------------
             // IF/ID
             // -----------------------------
-            if (branch_taken_ex) begin
+            if (branch_taken_ex || branch_taken_ex_r) begin
                 if_id_pc    <= 32'd0;
                 if_id_pc4   <= 32'd0;
-                if_id_instr <= 32'h00000013; // flush as NOP
+                if_id_instr <= 32'h00000013; // flush as NOP (covers 2-cycle IMEM lag)
             end else if (if_id_enable) begin
                 if_id_pc    <= pc_current;
                 if_id_pc4   <= pc_plus4_if;
@@ -430,6 +471,10 @@ module riscv_pipelined_top (
             mem_wb_rd         <= ex_mem_rd;
             mem_wb_reg_write  <= ex_mem_reg_write;
             mem_wb_wb_sel     <= ex_mem_wb_sel;
+            mem_wb_funct3     <= ex_mem_funct3;   // ← ADD THIS LINE
+            
+            if (mem_wb_reg_write)
+                inst_count <= inst_count + 1;
         end
     end
     
@@ -437,5 +482,35 @@ module riscv_pipelined_top (
     assign instr_out = instr_if;
     assign alu_out   = alu_result_ex;
     assign wb_out    = wb_write_data;
+    
+    always @(posedge clk or posedge rst) begin
+    if (rst) begin
+        debug_x5  <= 32'd0;
+        debug_x6  <= 32'd0;
+        debug_x7  <= 32'd0;
+        debug_x8  <= 32'd0;
+        debug_x9  <= 32'd0;
+        debug_x10 <= 32'd0;
+        debug_x11 <= 32'd0;
+        debug_x12 <= 32'd0;
+        debug_x13 <= 32'd0;
+        debug_x14 <= 32'd0;
+        debug_x15 <= 32'd0;
+        debug_x16 <= 32'd0;
+    end else begin
+        debug_x5  <= RF.regs[5];
+        debug_x6  <= RF.regs[6];
+        debug_x7  <= RF.regs[7];
+        debug_x8  <= RF.regs[8];
+        debug_x9  <= RF.regs[9];
+        debug_x10 <= RF.regs[10];
+        debug_x11 <= RF.regs[11];
+        debug_x12 <= RF.regs[12];
+        debug_x13 <= RF.regs[13];
+        debug_x14 <= RF.regs[14];
+        debug_x15 <= RF.regs[15];
+        debug_x16 <= RF.regs[16];
+    end
+end
 
 endmodule

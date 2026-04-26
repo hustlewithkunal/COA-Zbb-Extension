@@ -1,0 +1,278 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{cite}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\begin{document}
+	
+	\title{Design and Evaluation of a Zbb-Extended 5-Stage RISC-V Pipelined Processor on FPGA}
+	
+	\author{Om Maheshwari}
+	
+	\maketitle
+	
+	\begin{abstract}
+		This work presents the design, implementation, and evaluation of a 5-stage pipelined RISC-V processor extended with a subset of the RISC-V Zbb bit-manipulation extension. The baseline pipelined core was first implemented and validated on FPGA, after which the Zbb instructions \texttt{clz}, \texttt{ctz}, \texttt{cpop}, \texttt{rev8}, \texttt{sext.b}, \texttt{andn}, \texttt{orn}, and \texttt{xnor} were integrated into the ALU and decode path. Functional verification was performed in simulation and on a Zybo Z7-10 FPGA board using a switch-select debug interface and onboard LEDs. Benchmark-oriented evaluation was then carried out to measure dynamic instruction-count reduction for a popcount kernel and a CRC-style kernel, along with the post-implementation timing and area impact of the added logic. Results show a 75.86\% reduction in dynamic instruction count for the popcount kernel, while the evaluated CRC-style kernel showed no instruction-count reduction in its current formulation. Post-implementation FPGA results show an 8.55\% LUT overhead, no BRAM overhead, and a critical-path penalty of 0.275 ns.
+	\end{abstract}
+	
+	\begin{IEEEkeywords}
+		RISC-V, Zbb, bit manipulation, pipelined processor, FPGA, instruction-count reduction, ALU extension
+	\end{IEEEkeywords}
+	
+	\section{Introduction}
+	RISC-V has emerged as an attractive open instruction set architecture because of its modularity, extensibility, and suitability for both academic and industrial processor design. One of its key strengths is that instruction-set subsets and extensions can be selectively integrated depending on the target workload. Among these, the Zbb extension provides a useful group of basic bit-manipulation instructions that can accelerate software kernels involving bit scans, population counting, sign extension, byte reversal, and logic operations.
+	
+	In this work, a 5-stage pipelined RISC-V processor was implemented and then extended with a subset of Zbb instructions. The objective was not only to integrate the instructions correctly, but also to study their practical value in terms of dynamic instruction-count reduction and hardware cost. The extension was validated through simulation and FPGA implementation, and its impact was measured using benchmark kernels relevant to the implemented instructions.
+	
+	\section{Background and Motivation}
+	Bit-manipulation instructions are commonly useful in systems software, communication kernels, checksum and CRC computation, cryptographic primitives, bitfield processing, and low-level data transformation. In a baseline integer pipeline, many such operations must be expressed as sequences of shifts, masks, XORs, and branches. This increases dynamic instruction count and can reduce efficiency.
+	
+	The Zbb subset addresses this by providing single-instruction support for common operations such as counting leading zeros, counting trailing zeros, counting set bits, reversing bytes, sign-extending a byte, and negated-operand logical operations. Integrating such instructions into a pipelined processor is therefore useful both as a functional ISA-extension exercise and as a hardware-software co-design study.
+	
+	\section{Design Overview}
+	The processor used in this work is a 5-stage pipelined RISC-V core with the classic stages:
+	\begin{enumerate}
+		\item Instruction Fetch (IF)
+		\item Instruction Decode / Register Read (ID)
+		\item Execute (EX)
+		\item Memory Access (MEM)
+		\item Write Back (WB)
+	\end{enumerate}
+	
+	The core includes pipeline registers between stages, a forwarding unit for data hazard mitigation, and a hazard unit to handle load-use hazards. Instruction memory and data memory were implemented in FPGA-friendly synchronous style. The baseline core supported standard integer ALU operations and memory access operations required for initial validation. The Zbb extension was then integrated primarily in the ALU and decode logic.
+	
+	\section{Microarchitectural Integration}
+	\subsection{Baseline Pipeline}
+	The baseline core consisted of a 5-stage in-order pipeline with register forwarding and hazard detection. To ensure FPGA implementability on the Zybo Z7-10, the instruction memory and data memory were implemented using synchronous memory structures. This reduced resource issues compared to LUT-heavy asynchronous memory styles and enabled stable synthesis and implementation.
+	
+	\subsection{Zbb Extension Support}
+	The implemented Zbb subset in this work includes the following instructions:
+	\begin{itemize}
+		\item \texttt{clz}
+		\item \texttt{ctz}
+		\item \texttt{cpop}
+		\item \texttt{rev8}
+		\item \texttt{sext.b}
+		\item \texttt{andn}
+		\item \texttt{orn}
+		\item \texttt{xnor}
+	\end{itemize}
+	
+	These were chosen because they form a useful and representative set of basic bit-manipulation operations while remaining practical to integrate into a teaching-scale pipeline design.
+	
+	\subsection{ALU Modifications}
+	The ALU control width was expanded to support additional operation encodings required by the Zbb subset. New result-generation logic was added for the implemented instructions. The simpler logical instructions (\texttt{andn}, \texttt{orn}, \texttt{xnor}) were added as direct extensions of the existing logical datapath. Byte reversal and byte sign extension were added as combinational transforms. The heavier operations (\texttt{clz}, \texttt{ctz}, \texttt{cpop}) were implemented using combinational scan/count structures.
+	
+	These changes increased the combinational complexity of the ALU and were expected to affect post-implementation timing. Measuring this timing impact was therefore one of the required objectives of the work.
+	
+	\subsection{Decode and Control Path Modifications}
+	The decode logic was extended so that Zbb instructions are mapped to the correct ALU control codes. Since some of the implemented Zbb operations use OP-IMM unary-style encodings while others use R-type encodings, the control logic was updated accordingly. Additional instruction fields needed by the ALU control, such as the relevant immediate/function field used for unary Zbb decoding, were pipelined into the EX stage so that decode remained consistent with the existing pipeline structure.
+	
+	\section{Experimental Setup}
+	\subsection{Implementation Flow}
+	The processor was written in Verilog and synthesized and implemented in Xilinx Vivado targeting the Digilent Zybo Z7-10 FPGA board. Both the baseline core and the Zbb-extended core were maintained as separate versions so that fair implementation and benchmarking comparisons could be made.
+	
+	\subsection{Simulation Setup}
+	Functional verification was first carried out in simulation. Dedicated instruction-memory test programs were written for the implemented Zbb instructions. Register values were observed through the simulation testbench to confirm that each instruction produced the expected result.
+	
+	To support dynamic instruction-count measurement, an instruction counter was added to both the baseline and Zbb versions of the processor. Benchmarks were made to terminate using a done-flag convention in register \texttt{x31}, allowing simulation to stop based on program completion rather than a fixed time window.
+	
+	\subsection{FPGA Validation Setup}
+	After simulation verification, the designs were validated on the Zybo Z7-10 FPGA board. A wrapper top module was used to connect the internal processor signals to FPGA I/O. For baseline validation, the program counter and later selected debug outputs were mapped to onboard LEDs. For Zbb validation, a switch-select debug interface was used. The four slide switches on the board selected which architectural register would be observed, and the LEDs showed a chosen bit slice of that register. This allowed multiple instruction results to be checked on real hardware without regenerating a new bitstream for each test.
+	
+	\subsection{Benchmark Methodology}
+	Two benchmark-style evaluations were performed:
+	\begin{enumerate}
+		\item A popcount kernel
+		\item A CRC-style kernel
+	\end{enumerate}
+	
+	For the popcount benchmark, a baseline software implementation was compared against a Zbb implementation using \texttt{cpop}. For the CRC-style kernel, a baseline and a Zbb-assisted version were executed and their dynamic instruction counts compared. Post-implementation resource and timing values were collected for both baseline and Zbb cores to quantify hardware overhead and the added ALU critical-path penalty.
+	
+	\section{Verification}
+	\subsection{Simulation Verification}
+	Each implemented Zbb instruction was first verified in simulation using dedicated instruction-memory programs. The expected output registers were checked in the testbench against observed values. All implemented instructions produced the expected results.
+	
+	\begin{table}[H]
+		\centering
+		\caption{Simulation verification results for implemented Zbb instructions.}
+		\label{tab:sim_verification}
+		\begin{tabular}{cccc}
+			\toprule
+			\textbf{Register} & \textbf{Expected Value} & \textbf{Observed Value} & \textbf{Status} \\
+			\midrule
+			x5  & 32 & 32 & Pass \\
+			x6  & 32 & 32 & Pass \\
+			x7  & 0  & 0  & Pass \\
+			x8  & 31 & 31 & Pass \\
+			x9  & 0  & 0  & Pass \\
+			x10 & 1  & 1  & Pass \\
+			x11 & 24 & 24 & Pass \\
+			x12 & 4  & 4  & Pass \\
+			x13 & 4  & 4  & Pass \\
+			x14 & 0  & 0  & Pass \\
+			x15 & 0  & 0  & Pass \\
+			x16 & 32 & 32 & Pass \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\subsection{FPGA Verification}
+	FPGA verification was performed using the switch-select debug scheme. Each switch combination selected one of the destination registers corresponding to the final-group Zbb test program, and the LEDs displayed a chosen bit slice of that register. The observed LED patterns matched the expected values in all cases, confirming correct real-hardware execution of the implemented Zbb instructions.
+	
+	\begin{table*}[t]
+		\centering
+		\caption{FPGA validation using switch-select debug interface and LED observation.}
+		\label{tab:fpga_verification}
+		\begin{tabular}{cccccccc}
+			\toprule
+			\textbf{Switch} & \textbf{Register} & \textbf{Instruction Tested} & \textbf{Expected Value} & \textbf{LED Slice} & \textbf{Expected LED} & \textbf{Observed LED} & \textbf{Status} \\
+			\midrule
+			0001 & x5  & clz$(x1)$  & 32 & [5:2] & 1000 & 1000 & Pass \\
+			0010 & x6  & ctz$(x1)$  & 32 & [5:2] & 1000 & 1000 & Pass \\
+			0011 & x7  & cpop$(x1)$ & 0  & [3:0] & 0000 & 0000 & Pass \\
+			0100 & x8  & clz$(x2)$  & 31 & [4:1] & 1111 & 1111 & Pass \\
+			0101 & x9  & ctz$(x2)$  & 0  & [3:0] & 0000 & 0000 & Pass \\
+			0110 & x10 & cpop$(x2)$ & 1  & [3:0] & 0001 & 0001 & Pass \\
+			0111 & x11 & clz$(x3)$  & 24 & [4:1] & 1100 & 1100 & Pass \\
+			1000 & x12 & ctz$(x3)$  & 4  & [3:0] & 0100 & 0100 & Pass \\
+			1001 & x13 & cpop$(x3)$ & 4  & [3:0] & 0100 & 0100 & Pass \\
+			1010 & x14 & clz$(x4)$  & 0  & [3:0] & 0000 & 0000 & Pass \\
+			1011 & x15 & ctz$(x4)$  & 0  & [3:0] & 0000 & 0000 & Pass \\
+			1100 & x16 & cpop$(x4)$ & 32 & [5:2] & 1000 & 1000 & Pass \\
+			\bottomrule
+		\end{tabular}
+	\end{table*}
+	
+	\section{Results}
+	
+	\subsection{Dynamic Instruction Count Reduction}
+	Dynamic instruction-count evaluation was performed using the instruction counter added to both processor versions. For the popcount kernel, the baseline version used a software sequence to count set bits, whereas the Zbb version used the \texttt{cpop} instruction. For the CRC-style kernel, a baseline and a Zbb-assisted formulation were evaluated.
+	
+	\begin{table}[H]
+		\centering
+		\caption{Dynamic instruction-count comparison for evaluated kernels.}
+		\label{tab:inst_count}
+		\begin{tabular}{lccc}
+			\toprule
+			\textbf{Benchmark} & \textbf{Baseline} & \textbf{Zbb} & \textbf{Reduction} \\
+			\midrule
+			Popcount loop    & 29 & 7  & 75.86\% \\
+			CRC-style kernel & 19 & 19 & 0.00\% \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	The popcount result clearly demonstrates the value of \texttt{cpop}. The baseline implementation required multiple instructions to isolate individual bits, accumulate the count, and repeatedly process the input, whereas the Zbb version reduced this to a short sequence dominated by a single \texttt{cpop} operation.
+	
+	For the CRC-style kernel, no dynamic instruction-count reduction was observed in the current formulation. This does not indicate a design error; instead, it indicates that the selected CRC-style kernel did not exploit the implemented Zbb instructions in a way that reduced the total executed instruction count. In particular, the use of \texttt{rev8} in the evaluated version preserved functionality but did not shorten the executed instruction sequence relative to the baseline version.
+	
+	\subsection{Area and Timing Results}
+	Post-implementation utilization and timing were collected for both the baseline and Zbb-extended designs.
+	
+	\begin{table}[H]
+		\centering
+		\caption{Post-implementation resource and timing comparison.}
+		\label{tab:area_timing}
+		\begin{tabular}{lccc}
+			\toprule
+			\textbf{Metric} & \textbf{Baseline} & \textbf{Zbb} & \textbf{Change} \\
+			\midrule
+			LUT      & 152   & 165   & +8.55\% \\
+			FF       & 169   & 257   & +52.07\% \\
+			BRAM     & 0.5   & 0.5   & 0.00\% \\
+			WNS (ns) & 4.994 & 4.719 & -0.275 ns \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	The results show that the Zbb extension introduces a modest LUT overhead and no BRAM overhead. The flip-flop count increased more noticeably than the LUT count. In this design context, this increase reflects the total implemented design state associated with the extended version used for evaluation. Despite this increase, the overall resource usage remains small on the target FPGA.
+	
+	\subsection{Critical-Path Penalty}
+	The timing impact of the Zbb extension was quantified using post-implementation worst negative slack (WNS) under the same clock constraint for both designs.
+	
+	\begin{equation}
+		\Delta WNS = WNS_{\text{baseline}} - WNS_{\text{Zbb}}
+	\end{equation}
+	
+	\begin{equation}
+		\Delta WNS = 4.994 - 4.719 = 0.275~\text{ns}
+	\end{equation}
+	
+	Thus, the Zbb-enhanced ALU introduces a critical-path penalty of \textbf{0.275 ns}. This decrease in timing margin is expected because the extended ALU contains additional combinational logic, particularly for operations such as \texttt{clz}, \texttt{ctz}, and \texttt{cpop}. Even so, the penalty remains moderate and does not prevent successful implementation on the FPGA.
+	
+	\subsection{Result Summary}
+	The most important outcomes of the work are summarized below.
+	
+	\begin{table}[H]
+		\centering
+		\caption{Summary of key measured outcomes.}
+		\label{tab:summary}
+		\begin{tabular}{lc}
+			\toprule
+			\textbf{Quantity} & \textbf{Measured Value} \\
+			\midrule
+			Popcount instruction-count reduction & 75.86\% \\
+			CRC-style kernel instruction-count reduction & 0.00\% \\
+			LUT overhead & 8.55\% \\
+			FF overhead & 52.07\% \\
+			BRAM overhead & 0.00\% \\
+			Critical-path penalty added to ALU & 0.275 ns \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\subsection{Project Repository and Files}
+	All project files, including RTL code, testbenches, benchmark programs, FPGA validation material, and implementation reports, are available at \href{https://your-link-here}{this cloud repository link}.
+	
+	\section{Discussion}
+	The results show that the usefulness of a bit-manipulation extension depends strongly on the workload. The popcount benchmark benefited substantially because \texttt{cpop} directly replaces a multi-instruction software sequence. This is exactly the kind of workload for which Zbb is well suited. In contrast, the CRC-style kernel used in this work did not exhibit an instruction-count reduction. This suggests that either the benchmark formulation was not ideal for the implemented Zbb subset, or that a different CRC kernel structure would be needed to realize the benefits of operations such as \texttt{rev8} more clearly.
+	
+	From a hardware perspective, the extension cost is moderate. The LUT overhead is small, BRAM usage remains unchanged, and the timing penalty remains limited. This makes the implemented Zbb subset a practical enhancement for a small educational or prototype pipelined core.
+	
+	\section{Limitations}
+	This work has several limitations. First, the CRC evaluation was carried out using a small CRC-style kernel rather than a larger or more optimized CRC-32 implementation. Second, the reported overheads correspond to the implemented design configuration used during evaluation; if all debug and measurement support logic were removed, the pure architectural overhead could differ slightly. Third, only a subset of Zbb was implemented and evaluated.
+	
+	\section{Conclusion}
+	This work successfully implemented and evaluated a Zbb-extended 5-stage pipelined RISC-V processor. The baseline core and the Zbb-enhanced core were both synthesized, implemented, and validated on FPGA. All target Zbb instructions were verified in simulation and on hardware. Dynamic instruction-count measurements showed a strong benefit for the popcount kernel, with a reduction from 29 to 7 instructions, corresponding to 75.86\%. The evaluated CRC-style kernel showed no instruction-count reduction in its current formulation. Post-implementation FPGA results showed an 8.55\% LUT overhead, zero BRAM overhead, and a 0.275 ns critical-path penalty. Overall, the results demonstrate that the selected Zbb subset can provide meaningful software benefit for suitable kernels while maintaining modest hardware cost.
+	
+	\section*{Acknowledgment}
+	The author acknowledges the use of the Zybo Z7-10 FPGA platform and the Vivado design flow for implementation, verification, and hardware evaluation.
+	
+	\begin{figure}[H]
+		\centering
+		\fbox{\parbox[c][4.5cm][c]{0.9\columnwidth}{\centering Insert pipeline datapath / ALU architecture figure here}}
+		\caption{Baseline and Zbb-extended pipeline datapath / ALU architecture.}
+		\label{fig:arch_placeholder}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\fbox{\parbox[c][4.5cm][c]{0.9\columnwidth}{\centering Insert FPGA board setup / LED validation image here}}
+		\caption{FPGA validation setup on Zybo Z7-10 using switch-select debug interface.}
+		\label{fig:fpga_placeholder}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\fbox{\parbox[c][4.5cm][c]{0.9\columnwidth}{\centering Insert timing or utilization report screenshot here}}
+		\caption{Post-implementation utilization and timing summary.}
+		\label{fig:timing_placeholder}
+	\end{figure}
+	
+	\begin{thebibliography}{00}
+		\bibitem{b1} RISC-V International, ``The RISC-V Instruction Set Manual, Volume I: Unprivileged ISA,'' latest public specification.
+		\bibitem{b2} Xilinx, ``Vivado Design Suite User Guide,'' implementation and timing analysis documentation.
+		\bibitem{b3} Digilent, ``Zybo Z7 FPGA Board Reference Manual.''
+	\end{thebibliography}
+	
+\end{document}

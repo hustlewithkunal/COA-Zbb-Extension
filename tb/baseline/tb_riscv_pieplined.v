@@ -10,13 +10,16 @@ module tb_riscv_pipelined;
     wire [31:0] alu_out;
     wire [31:0] wb_out;
 
+    wire [31:0] inst_count;
+
     riscv_pipelined_top DUT (
         .clk(clk),
         .rst(rst),
         .pc_out(pc_out),
         .instr_out(instr_out),
         .alu_out(alu_out),
-        .wb_out(wb_out)
+        .wb_out(wb_out),
+        .inst_count(inst_count)
     );
 
     // -----------------------------
@@ -85,6 +88,7 @@ module tb_riscv_pipelined;
     wire [31:0] x5 = DUT.RF.regs[5];
     wire [31:0] x6 = DUT.RF.regs[6];
     wire [31:0] x7 = DUT.RF.regs[7];
+    wire [31:0] x31 = DUT.RF.regs[31];
 
     // -----------------------------
     // Optional: word-level data memory probe
@@ -105,13 +109,16 @@ module tb_riscv_pipelined;
     // Reset and runtime
     // -----------------------------
     initial begin
-        rst = 1;
-        #20;
-        rst = 0;
+    rst = 1;
+    #20;
+    rst = 0;
 
-        #300;
-        $finish;
-    end
+    wait (x31 == 32'd1);
+    #20;
+
+    $display("Final instruction count = %0d", inst_count);
+    $finish;
+end
 
     // -----------------------------
     // Console monitor
