@@ -41,7 +41,7 @@
 	\maketitle
 	
 	\begin{abstract}
-		This work presents the design, implementation, and evaluation of a 5-stage pipelined RISC-V processor extended with a subset of the RISC-V Zbb bit-manipulation extension. The baseline pipelined core was first implemented and validated on FPGA, after which the Zbb instructions \texttt{clz}, \texttt{ctz}, \texttt{cpop}, \texttt{rev8}, \texttt{sext.b}, \texttt{andn}, \texttt{orn}, and \texttt{xnor} were integrated into the ALU and decode path. Functional verification was performed in simulation and on a Zybo Z7-10 FPGA board using a switch-select debug interface and onboard LEDs. Benchmark-oriented evaluation was then carried out to measure dynamic instruction-count reduction for a popcount kernel and a CRC-style kernel, along with the post-implementation timing and area impact of the added logic. Results show an 85.19\% reduction in dynamic instruction count for the popcount kernel, and an 18.68\% reduction for the CRC-32 kernel. Because smaller instruction footprints yielded denser instruction memories, post-implementation results showed an overall net 10.22\% LUT logic reduction, no BRAM overhead, and a negligible critical-path penalty of 0.007 ns.
+		This work presents the design, implementation, and evaluation of a 5-stage pipelined RISC-V processor extended with a subset of the RISC-V Zbb bit-manipulation extension. The baseline pipelined core was first implemented and validated on FPGA, after which the Zbb instructions \texttt{clz}, \texttt{ctz}, \texttt{cpop}, \texttt{rev8}, \texttt{sext.b}, \texttt{andn}, \texttt{orn}, and \texttt{xnor} were integrated into the ALU and decode path. Functional verification was performed in simulation and on a Zybo Z7-10 FPGA board using a switch-select debug interface and onboard LEDs. Benchmark-oriented evaluation was then carried out to measure dynamic instruction-count reduction for a popcount kernel and a CRC-style kernel, along with the post-implementation timing and area impact of the added logic. Results show an 82.14\% reduction in dynamic instruction count for the popcount kernel, and an 18.68\% reduction for the CRC-32 kernel. Because smaller instruction footprints yielded denser instruction memories, post-implementation results showed an overall net 10.22\% LUT logic reduction, no BRAM overhead, and a negligible critical-path penalty of 0.007 ns.
 	\end{abstract}
 	
 	\begin{IEEEkeywords}
@@ -237,7 +237,7 @@ x14 = cpop(x10);  // hdwr popcount
 			\toprule
 			\textbf{Benchmark} & \textbf{Baseline} & \textbf{Zbb} & \textbf{Reduction} \\
 			\midrule
-			Popcount loop    & 27  & 4   & 85.19\% \\
+			Popcount loop    & 28  & 5   & 82.14\% \\
 			CRC-32 + Popcount & 455 & 370 & 18.68\% \\
 			\bottomrule
 		\end{tabular}
@@ -292,7 +292,7 @@ x14 = cpop(x10);  // hdwr popcount
 			\toprule
 			\textbf{Quantity} & \textbf{Measured Value} \\
 			\midrule
-			Popcount instruction-count reduction & 85.19\% \\
+			Popcount instruction-count reduction & 82.14\% \\
 			CRC-32 instruction-count reduction & 18.68\% \\
 			LUT change (overall core) & -10.22\% \\
 			FF change (overall core) & -6.24\% \\
@@ -306,7 +306,7 @@ x14 = cpop(x10);  // hdwr popcount
 	All project files, including RTL code, testbenches, benchmark programs, FPGA validation material, and implementation reports, are available at \href{https://github.com/hustlewithkunal/COA-Zbb-Extension}{this Github repository link}.
 	
 	\section{Discussion}
-	The results cleanly show the compounding value of bit-manipulation ISA extensions. The pure software efficiency metrics significantly improved. The \texttt{cpop} and \texttt{rev8} usage shrank our tested CRC-32/popcount payload by 18.68\% and reduced raw popcount operations by 85.19\%, demonstrating how well Zbb replaces awkward multi-instruction shifting/masking sequences.
+	The results cleanly show the compounding value of bit-manipulation ISA extensions. The pure software efficiency metrics significantly improved. The \texttt{cpop} and \texttt{rev8} usage shrank our tested CRC-32/popcount payload by 18.68\% and reduced raw popcount operations by 82.14\%, demonstrating how well Zbb replaces awkward multi-instruction shifting/masking sequences.
 	
 	From a hardware perspective, the implementation results revealed an unexpected but welcome dynamic: the instruction memory footprint shrunk heavily compared to the baseline, which more than offset the added logic complexity of the ALU extension. Thus, the pipeline achieved better code density resulting in fewer core LUTs/FFs overall, all with a negligible 7 picosecond timing penalty. This validates the Zbb subset as a highly efficient architectural addition for embedded RISC-V cores.
 	
@@ -314,7 +314,7 @@ x14 = cpop(x10);  // hdwr popcount
 	This work has several limitations. First, the CRC evaluation was carried out using a small CRC-style kernel rather than a larger or more optimized CRC-32 implementation. Second, the reported overheads correspond to the implemented design configuration used during evaluation; if all debug and measurement support logic were removed, the pure architectural overhead could differ slightly. Third, only a subset of Zbb was implemented and evaluated.
 	
 	\section{Conclusion}
-	This work successfully implemented and evaluated a Zbb-extended 5-stage pipelined RISC-V processor. The baseline core and the Zbb-enhanced core were both synthesized, implemented, and validated on FPGA. All target Zbb instructions were verified in simulation and on hardware. Dynamic instruction-count measurements proved a powerful optimization benefit, reducing a raw unrolled popcount workload by 85.19\% and yielding an 18.68\% improvement in a real-world CRC-32 task. On an FPGA fabric, these dense programs translated to smaller instruction ROM requirements, ultimately leading to a ~10\% reduction in total logic LUTs without negatively impacting the timing critical path. Overall, the results conclusively demonstrate that the selected Zbb subset provides significant performance and code density improvements at a near-zero hardware logic cost.
+	This work successfully implemented and evaluated a Zbb-extended 5-stage pipelined RISC-V processor. The baseline core and the Zbb-enhanced core were both synthesized, implemented, and validated on FPGA. All target Zbb instructions were verified in simulation and on hardware. Dynamic instruction-count measurements proved a powerful optimization benefit, reducing a raw unrolled popcount workload by 82.14\% and yielding an 18.68\% improvement in a real-world CRC-32 task. On an FPGA fabric, these dense programs translated to smaller instruction ROM requirements, ultimately leading to a ~10\% reduction in total logic LUTs without negatively impacting the timing critical path. Overall, the results conclusively demonstrate that the selected Zbb subset provides significant performance and code density improvements at a near-zero hardware logic cost.
 	
 	\section*{Acknowledgment}
 	The author acknowledges the use of the Zybo Z7-10 FPGA platform and the Vivado design flow for implementation, verification, and hardware evaluation.
