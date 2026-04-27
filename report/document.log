@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.4.13)  25 APR 2026 19:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.4.13)  27 APR 2026 12:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -286,6 +286,39 @@ LaTeX Info: Redefining \cite on input line 302.
 LaTeX Info: Redefining \nocite on input line 332.
 Package: cite 2015/02/27  v 5.5
 )
+(C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.sty
+\lst@mode=\count308
+\lst@gtempboxa=\box61
+\lst@token=\toks29
+\lst@length=\count309
+\lst@currlwidth=\dimen199
+\lst@column=\count310
+\lst@pos=\count311
+\lst@lostspace=\dimen256
+\lst@width=\dimen257
+\lst@newlines=\count312
+\lst@lineno=\count313
+\lst@maxwidth=\dimen258
+
+(C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstpatch.sty
+File: lstpatch.sty 2025/11/14 1.11b (Carsten Heinz)
+)
+(C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
+File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
+\c@lstnumber=\count314
+\lst@skipnumbers=\count315
+\lst@framebox=\box62
+)
+(C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
+File: listings.cfg 2025/11/14 1.11b listings configuration
+))
+Package: listings 2025/11/14 1.11b (Carsten Heinz)
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
 Package: hyperref 2025-07-12 v7.01o Hypertext links for LaTeX
 
@@ -335,20 +368,20 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
-\c@section@level=\count308
+\c@section@level=\count316
 )
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
 Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count309
+\etb@tempcnta=\count317
 )
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.s
 ty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
 )
 )
-\@linkdim=\dimen199
-\Hy@linkcounter=\count310
-\Hy@pagecounter=\count311
+\@linkdim=\dimen259
+\Hy@linkcounter=\count318
+\Hy@pagecounter=\count319
  (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
 File: pd1enc.def 2025-07-12 v7.01o Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
@@ -356,12 +389,13 @@ Now handling font encoding PD1 ...
 ) (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-\Hy@SavedSpaceFactor=\count312
+\Hy@SavedSpaceFactor=\count320
  (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
 File: puenc.def 2025-07-12 v7.01o Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
 )
+Package hyperref Info: Option `colorlinks' set `true' on input line 4066.
 Package hyperref Info: Hyper figures OFF on input line 4195.
 Package hyperref Info: Link nesting OFF on input line 4200.
 Package hyperref Info: Hyper index ON on input line 4203.
@@ -369,14 +403,14 @@ Package hyperref Info: Plain pages OFF on input line 4210.
 Package hyperref Info: Backreferencing OFF on input line 4215.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4462.
-\c@Hy@tempcnt=\count313
+\c@Hy@tempcnt=\count321
 
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4801.
-\XeTeXLinkMargin=\dimen256
+\XeTeXLinkMargin=\dimen260
 
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
@@ -386,26 +420,26 @@ Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
-\Fld@menulength=\count314
-\Field@Width=\dimen257
-\Fld@charsize=\dimen258
+\Fld@menulength=\count322
+\Field@Width=\dimen261
+\Fld@charsize=\dimen262
 Package hyperref Info: Hyper figures OFF on input line 6078.
 Package hyperref Info: Link nesting OFF on input line 6083.
 Package hyperref Info: Hyper index ON on input line 6086.
 Package hyperref Info: backreferencing OFF on input line 6093.
-Package hyperref Info: Link coloring OFF on input line 6098.
+Package hyperref Info: Link coloring ON on input line 6096.
 Package hyperref Info: Link coloring with OCG OFF on input line 6103.
 Package hyperref Info: PDF/A mode OFF on input line 6108.
-\Hy@abspage=\count315
-\c@Item=\count316
-\c@Hfootnote=\count317
+\Hy@abspage=\count323
+\c@Item=\count324
+\c@Hfootnote=\count325
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
 File: hpdftex.def 2025-07-12 v7.01o Hyperref driver for pdfTeX
-\Fld@listcount=\count318
-\c@bookmark@seq@number=\count319
+\Fld@listcount=\count326
+\c@bookmark@seq@number=\count327
 
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfil
 echeck.sty
@@ -423,45 +457,45 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
 tex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count320
+\l__color_backend_stack_int=\count328
 ) (document.aux)
 \openout1 = `document.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
 
 -- Lines per column: 56 (exact).
 
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count321
-\scratchdimen=\dimen259
-\scratchbox=\box61
-\nofMPsegments=\count322
-\nofMParguments=\count323
-\everyMPshowfont=\toks29
-\MPscratchCnt=\count324
-\MPscratchDim=\dimen260
-\MPnumerator=\count325
-\makeMPintoPDFobject=\count326
-\everyMPtoPDFconversion=\toks30
+\scratchcounter=\count329
+\scratchdimen=\dimen263
+\scratchbox=\box63
+\nofMPsegments=\count330
+\nofMParguments=\count331
+\everyMPshowfont=\toks30
+\MPscratchCnt=\count332
+\MPscratchDim=\dimen264
+\MPnumerator=\count333
+\makeMPintoPDFobject=\count334
+\everyMPtoPDFconversion=\toks31
 )
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
 ase.sty
@@ -473,18 +507,19 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring OFF on input line 15.
+\c@lstlisting=\count335
+Package hyperref Info: Link coloring ON on input line 27.
  (document.out) (document.out)
 \@outlinefile=\write3
 \openout3 = `document.out'.
 
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 24
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 44
 .
 
 (C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
-Underfull \hbox (badness 2856) in paragraph at lines 39--40
+Underfull \hbox (badness 2856) in paragraph at lines 59--60
 []\T1/ptm/m/n/10 The Zbb sub-set ad-dresses this by pro-vid-ing single-
  []
 
@@ -492,10 +527,17 @@ Underfull \hbox (badness 2856) in paragraph at lines 39--40
 tta/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
-] [2] [3]
-Underfull \vbox (badness 1033) has occurred while \output is active []
+]
+(C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+File: lstlang1.sty 2025/11/14 1.11b listings language file
+)
+(C:\Users\mitta\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
+File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
+)
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <8> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 129.
 
-
+[2] [3] [4]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -507,22 +549,24 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4] (document.aux)
+[5
+
+] (document.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
 Package rerunfilecheck Info: File `document.out' has not changed.
-(rerunfilecheck)             Checksum: 7B7ADCFC2A40670587D20B2122ED41DE;3890.
+(rerunfilecheck)             Checksum: ACDEB39E13F201BF7888E23E632418EA;4452.
  ) 
 Here is how much of TeX's memory you used:
- 11196 strings out of 467871
- 175208 string characters out of 5418376
- 616384 words of memory out of 5000000
- 39884 multiletter control sequences out of 15000+600000
- 740297 words of font info for 147 fonts, out of 8000000 for 9000
+ 12963 strings out of 467871
+ 199029 string characters out of 5418376
+ 920463 words of memory out of 5000000
+ 41600 multiletter control sequences out of 15000+600000
+ 742276 words of font info for 153 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,9n,79p,1209b,446s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,9n,79p,1259b,2007s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/mitta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmmi10.pfb><C:/Users/mitta/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmmi8.pfb><C:/Users/mitta/AppData/Local/Programs/MiKTeX/fonts/type1/pu
@@ -532,13 +576,14 @@ type1/public/amsfonts/cm/cmr8.pfb><C:/Users/mitta/AppData/Local/Programs/MiKTeX
 ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/mitta/AppData/Loca
 l/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/mitta/AppData/Lo
 cal/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/mitta/AppData/
-Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/mitta/AppData/
-Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/mitta/AppData
-/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/mitta/AppData
-/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on document.pdf (4 pages, 171995 bytes).
+Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/mitta/AppDa
+ta/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/mitta/AppDa
+ta/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/mitta/AppD
+ata/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/mitta/AppD
+ata/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on document.pdf (5 pages, 197995 bytes).
 PDF statistics:
- 222 PDF objects out of 1000 (max. 8388607)
- 52 named destinations out of 1000 (max. 500000)
- 209 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 275 PDF objects out of 1000 (max. 8388607)
+ 82 named destinations out of 1000 (max. 500000)
+ 233 words of extra memory for PDF output out of 10000 (max. 10000000)
 

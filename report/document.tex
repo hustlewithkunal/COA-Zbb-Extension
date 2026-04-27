@@ -10,18 +10,38 @@
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage{cite}
+\usepackage{listings}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\lstset{
+	breaklines=true,
+	basicstyle=\footnotesize\ttfamily,
+	frame=single,
+	xleftmargin=0pt,
+	xrightmargin=0pt,
+	aboveskip=0.5em,
+	belowskip=1em,
+	showstringspaces=false
+}
 
 \begin{document}
 	
 	\title{Design and Evaluation of a Zbb-Extended 5-Stage RISC-V Pipelined Processor on FPGA}
 	
-	\author{Om Maheshwari}
+	\author{
+		\IEEEauthorblockN{Kunal Mittal}
+		\IEEEauthorblockA{
+			B24491 \\
+			School of Computing and Electrical Engineering\\
+			IIT Mandi\\
+			b24491@students.iitmandi.ac.in
+		}
+	}
 	
 	\maketitle
 	
 	\begin{abstract}
-		This work presents the design, implementation, and evaluation of a 5-stage pipelined RISC-V processor extended with a subset of the RISC-V Zbb bit-manipulation extension. The baseline pipelined core was first implemented and validated on FPGA, after which the Zbb instructions \texttt{clz}, \texttt{ctz}, \texttt{cpop}, \texttt{rev8}, \texttt{sext.b}, \texttt{andn}, \texttt{orn}, and \texttt{xnor} were integrated into the ALU and decode path. Functional verification was performed in simulation and on a Zybo Z7-10 FPGA board using a switch-select debug interface and onboard LEDs. Benchmark-oriented evaluation was then carried out to measure dynamic instruction-count reduction for a popcount kernel and a CRC-style kernel, along with the post-implementation timing and area impact of the added logic. Results show a 75.86\% reduction in dynamic instruction count for the popcount kernel, while the evaluated CRC-style kernel showed no instruction-count reduction in its current formulation. Post-implementation FPGA results show an 8.55\% LUT overhead, no BRAM overhead, and a critical-path penalty of 0.275 ns.
+		This work presents the design, implementation, and evaluation of a 5-stage pipelined RISC-V processor extended with a subset of the RISC-V Zbb bit-manipulation extension. The baseline pipelined core was first implemented and validated on FPGA, after which the Zbb instructions \texttt{clz}, \texttt{ctz}, \texttt{cpop}, \texttt{rev8}, \texttt{sext.b}, \texttt{andn}, \texttt{orn}, and \texttt{xnor} were integrated into the ALU and decode path. Functional verification was performed in simulation and on a Zybo Z7-10 FPGA board using a switch-select debug interface and onboard LEDs. Benchmark-oriented evaluation was then carried out to measure dynamic instruction-count reduction for a popcount kernel and a CRC-style kernel, along with the post-implementation timing and area impact of the added logic. Results show an 85.19\% reduction in dynamic instruction count for the popcount kernel, and an 18.68\% reduction for the CRC-32 kernel. Because smaller instruction footprints yielded denser instruction memories, post-implementation results showed an overall net 10.22\% LUT logic reduction, no BRAM overhead, and a negligible critical-path penalty of 0.007 ns.
 	\end{abstract}
 	
 	\begin{IEEEkeywords}
@@ -97,6 +117,57 @@
 	\end{enumerate}
 	
 	For the popcount benchmark, a baseline software implementation was compared against a Zbb implementation using \texttt{cpop}. For the CRC-style kernel, a baseline and a Zbb-assisted version were executed and their dynamic instruction counts compared. Post-implementation resource and timing values were collected for both baseline and Zbb cores to quantify hardware overhead and the added ALU critical-path penalty.
+	
+	\subsection{Kernel Implementations}
+	To demonstrate the optimization potential of the Zbb extension, two core operations were tested conceptually and implemented in assembly.
+	
+	\subsubsection{Popcount Kernel}
+	The baseline popcount algorithm evaluates the Hamming weight by using a standard bit-testing unrolled loop, taking multiple operations per bit:
+
+\noindent\textbf{Baseline Popcount (Pseudocode)}
+\begin{lstlisting}[language=C]
+x2 = 0;           // bit count
+for(i=0; i<8; i++){
+  x4 = x1 & 1;    // isolate LSB
+  x2 = x2 + x4;   // accumulate
+  x1 = x1 >> 1;   // shift right
+}
+\end{lstlisting}
+
+	With the Zbb extension, this entire loop is replaced by a single hardware instruction, significantly reducing code size and execution time:
+
+\noindent\textbf{Zbb Popcount (Pseudocode)}
+\begin{lstlisting}[language=C]
+x2 = cpop(x1);    /* hdwr popcount */
+\end{lstlisting}
+
+	\subsubsection{CRC Kernel Byte-Swap and Popcount}
+	The CRC benchmark involves computing a 32-bit CRC over an 8-byte payload, which mandates a final byte-swap (endianness conversion) and a parity/popcount verification. The baseline processor must perform an 11-instruction sequence of shifts and logical ORs to reverse the bytes, followed by a dynamically expensive Kernighan bit-counting loop to determine the Hamming weight of the result.
+	
+\noindent\textbf{Baseline CRC Teardown (Pseudocode)}
+\begin{lstlisting}[language=C]
+// 11 shift/mask/or seq
+x15 = (x10>>24) | (x10<<24);
+x16 = ((x10>>8)&0xFF) << 16;
+x15 = x15 | x16;
+x16 = ((x10>>16)&0xFF) << 8;
+x10 = x15 | x16;
+
+// Kernighan (~49 instrs)
+x14 = 0;
+while (x10 != 0) {
+  x14++;
+  x10 = x10 & (x10-1);
+}
+\end{lstlisting}
+	
+	The Zbb-extended processor collapses these bloated software routines into functionally equivalent single-hardware instructions routines:
+
+\noindent\textbf{Zbb CRC Teardown (Pseudocode)}
+\begin{lstlisting}[language=C]
+x10 = rev8(x10);  // hdwr byte-swap
+x14 = cpop(x10);  // hdwr popcount
+\end{lstlisting}
 	
 	\section{Verification}
 	\subsection{Simulation Verification}
