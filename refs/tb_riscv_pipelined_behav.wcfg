@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_riscv_pipelined_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_riscv_pipelined" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,000.001 ns"></ZoomEndTime>
+      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="217"></NameColumnWidth>
+      <ValueColumnWidth column_width="261"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="50" />
+   <wvobject fp_name="/tb_riscv_pipelined/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/pc_out" type="array">
+      <obj_property name="ElementShortName">pc_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/instr_out" type="array">
+      <obj_property name="ElementShortName">instr_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">instr_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/alu_out" type="array">
+      <obj_property name="ElementShortName">alu_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/wb_out" type="array">
+      <obj_property name="ElementShortName">wb_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wb_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/inst_count" type="array">
+      <obj_property name="ElementShortName">inst_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/pc_current" type="array">
+      <obj_property name="ElementShortName">pc_current[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_current[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/pc_next" type="array">
+      <obj_property name="ElementShortName">pc_next[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_next[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/instr_if" type="array">
+      <obj_property name="ElementShortName">instr_if[31:0]</obj_property>
+      <obj_property name="ObjectShortName">instr_if[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/if_id_pc" type="array">
+      <obj_property name="ElementShortName">if_id_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">if_id_pc[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/if_id_pc4" type="array">
+      <obj_property name="ElementShortName">if_id_pc4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">if_id_pc4[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/if_id_instr" type="array">
+      <obj_property name="ElementShortName">if_id_instr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">if_id_instr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/if_id_rs1" type="array">
+      <obj_property name="ElementShortName">if_id_rs1[4:0]</obj_property>
+      <obj_property name="ObjectShortName">if_id_rs1[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/if_id_rs2" type="array">
+      <obj_property name="ElementShortName">if_id_rs2[4:0]</obj_property>
+      <obj_property name="ObjectShortName">if_id_rs2[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/if_id_rd" type="array">
+      <obj_property name="ElementShortName">if_id_rd[4:0]</obj_property>
+      <obj_property name="ObjectShortName">if_id_rd[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/if_id_opcode" type="array">
+      <obj_property name="ElementShortName">if_id_opcode[6:0]</obj_property>
+      <obj_property name="ObjectShortName">if_id_opcode[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/if_id_funct3" type="array">
+      <obj_property name="ElementShortName">if_id_funct3[2:0]</obj_property>
+      <obj_property name="ObjectShortName">if_id_funct3[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/if_id_funct7" type="array">
+      <obj_property name="ElementShortName">if_id_funct7[6:0]</obj_property>
+      <obj_property name="ObjectShortName">if_id_funct7[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/reg_rdata1" type="array">
+      <obj_property name="ElementShortName">reg_rdata1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_rdata1[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/reg_rdata2" type="array">
+      <obj_property name="ElementShortName">reg_rdata2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_rdata2[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/imm_id" type="array">
+      <obj_property name="ElementShortName">imm_id[31:0]</obj_property>
+      <obj_property name="ObjectShortName">imm_id[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/ctrl_reg_write" type="logic">
+      <obj_property name="ElementShortName">ctrl_reg_write</obj_property>
+      <obj_property name="ObjectShortName">ctrl_reg_write</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/ctrl_mem_read" type="logic">
+      <obj_property name="ElementShortName">ctrl_mem_read</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mem_read</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/ctrl_mem_write" type="logic">
+      <obj_property name="ElementShortName">ctrl_mem_write</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mem_write</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/ctrl_alu_src" type="logic">
+      <obj_property name="ElementShortName">ctrl_alu_src</obj_property>
+      <obj_property name="ObjectShortName">ctrl_alu_src</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/ctrl_wb_sel" type="array">
+      <obj_property name="ElementShortName">ctrl_wb_sel[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ctrl_wb_sel[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/ctrl_branch" type="logic">
+      <obj_property name="ElementShortName">ctrl_branch</obj_property>
+      <obj_property name="ObjectShortName">ctrl_branch</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/ctrl_jump" type="logic">
+      <obj_property name="ElementShortName">ctrl_jump</obj_property>
+      <obj_property name="ObjectShortName">ctrl_jump</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/ctrl_jalr" type="logic">
+      <obj_property name="ElementShortName">ctrl_jalr</obj_property>
+      <obj_property name="ObjectShortName">ctrl_jalr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/ctrl_use_pc" type="logic">
+      <obj_property name="ElementShortName">ctrl_use_pc</obj_property>
+      <obj_property name="ObjectShortName">ctrl_use_pc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/ctrl_alu_op" type="array">
+      <obj_property name="ElementShortName">ctrl_alu_op[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ctrl_alu_op[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/alu_result_ex" type="array">
+      <obj_property name="ElementShortName">alu_result_ex[31:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_result_ex[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/mem_read_data" type="array">
+      <obj_property name="ElementShortName">mem_read_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_read_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/wb_write_data" type="array">
+      <obj_property name="ElementShortName">wb_write_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wb_write_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/stall_pipeline" type="logic">
+      <obj_property name="ElementShortName">stall_pipeline</obj_property>
+      <obj_property name="ObjectShortName">stall_pipeline</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/branch_taken_ex" type="logic">
+      <obj_property name="ElementShortName">branch_taken_ex</obj_property>
+      <obj_property name="ObjectShortName">branch_taken_ex</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/forward_a" type="array">
+      <obj_property name="ElementShortName">forward_a[1:0]</obj_property>
+      <obj_property name="ObjectShortName">forward_a[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/forward_b" type="array">
+      <obj_property name="ElementShortName">forward_b[1:0]</obj_property>
+      <obj_property name="ObjectShortName">forward_b[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/id_ex_rd" type="array">
+      <obj_property name="ElementShortName">id_ex_rd[4:0]</obj_property>
+      <obj_property name="ObjectShortName">id_ex_rd[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/ex_mem_rd" type="array">
+      <obj_property name="ElementShortName">ex_mem_rd[4:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_mem_rd[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/mem_wb_rd" type="array">
+      <obj_property name="ElementShortName">mem_wb_rd[4:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_wb_rd[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/x1" type="array">
+      <obj_property name="ElementShortName">x1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x1[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/x2" type="array">
+      <obj_property name="ElementShortName">x2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x2[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/x3" type="array">
+      <obj_property name="ElementShortName">x3[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x3[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/x4" type="array">
+      <obj_property name="ElementShortName">x4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x4[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/x5" type="array">
+      <obj_property name="ElementShortName">x5[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x5[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/x6" type="array">
+      <obj_property name="ElementShortName">x6[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x6[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/x7" type="array">
+      <obj_property name="ElementShortName">x7[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x7[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_riscv_pipelined/x31" type="array">
+      <obj_property name="ElementShortName">x31[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x31[31:0]</obj_property>
+   </wvobject>
+</wave_config>

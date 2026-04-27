@@ -114,46 +114,60 @@ module tb_riscv_pipelined;
         forever #5 clk = ~clk;
     end
 
-    // -----------------------------
-    // Reset and runtime
-    // -----------------------------
+    // --------------------------------------------------
+    // IMEM diagnostic - fires at t=1 to verify correct binary is loaded.
+    // Check: mem[19] must be 0x00100F93 (addi x31, x0, 1)
+    //        mem[20] must be 0x0000006F (jal x0, 0)
+    // If these differ the program is stale - do a full Relaunch in Vivado.
+    // --------------------------------------------------
     initial begin
-    rst = 1;
-    #20;
-    rst = 0;
+        #1;
+        $display("=== ZBB INSTR MEM CONTENTS (verify correct compile) ===");
+        $display("  mem[17]=0x%08X (expect 0xFFF2C513 xori x10)", DUT.IMEM.mem[17]);
+        $display("  mem[18]=0x%08X (expect 0x69855513 rev8 x10)", DUT.IMEM.mem[18]);
+        $display("  mem[19]=0x%08X (expect 0x00100F93 addi x31)", DUT.IMEM.mem[19]);
+        $display("  mem[20]=0x%08X (expect 0x0000006F jal x0,0)",  DUT.IMEM.mem[20]);
+    end
 
-    wait (x31 == 32'd1);
-    #20;
-
-    $display("Final instruction count = %0d", inst_count);
-    $finish;
-end
-
-    // -----------------------------
-    // Console monitor
-    // -----------------------------
+    // --------------------------------------------------
+    // Reset and run
+    // The CRC program needs ~650 cycles (~6500 ns) to
+    // complete.  Run this simulation with "Run All" in
+    // Vivado (NOT "Run for 1000 ns") so $finish fires.
+    // --------------------------------------------------
     initial begin
-        $display("------------------------------------------------------------------------------------------------------------------------------------------------");
-        $display("time rst pc_current instr_if   if_id_instr rs1 rs2 rd reg1     reg2     imm      alu_result mem_data  wb_data   x1 x2 x3 x4 x5 x6 x7");
-        $display("------------------------------------------------------------------------------------------------------------------------------------------------");
+        rst = 1;
+        #20;
+        rst = 0;
 
-        $monitor("%4t  %b   %8h %8h %8h %2d %2d %2d %8h %8h %8h %8h %8h %8h %0d %0d %0d %0d %0d %0d %0d",
-                 $time, rst,
-                 pc_current,
-                 instr_if,
-                 if_id_instr,
-                 if_id_rs1,
-                 if_id_rs2,
-                 if_id_rd,
-                 reg_rdata1,
-                 reg_rdata2,
-                 imm_id,
-                 alu_result_ex,
-                 mem_read_data,
-                 wb_write_data,
-                 x1, x2, x3, x4, x5, x6, x7);
-                 
-                 
+        wait (x31 === 32'd1);
+        #20;
+        $display("=== CRC-32 ZBB DONE at %0t ns ===", $time);
+        $display("  CRC-32 result (x10) = 0x%08X", DUT.RF.regs[10]);
+        $display("  Instruction count   = %0d",     inst_count);
+        $finish;
+    end
+
+    // Safety timeout - fires only if program fails to complete
+    initial begin
+        #100000;
+        $display("TIMEOUT: x31=%0d x5=0x%h x6=%0d x7=%0d x10=0x%h x13=%0d",
+                 DUT.RF.regs[31], DUT.RF.regs[5], DUT.RF.regs[6],
+                 DUT.RF.regs[7],  DUT.RF.regs[10], DUT.RF.regs[13]);
+        $display("  PC=%0d if_id_instr=0x%08X branch_taken=%b",
+                 DUT.pc_current, DUT.if_id_instr, DUT.branch_taken_ex);
+        $finish;
+    end
+
+    // Heartbeat: print x6 (outer byte counter) every 500 ns
+    always #500 begin
+        if (!rst)
+            $display("  t=%0t: x5=0x%h x6=%0d x7=%0d x13=%0d",
+                     $time,
+                     DUT.RF.regs[5],
+                     DUT.RF.regs[6],
+                     DUT.RF.regs[7],
+                     DUT.RF.regs[13]);
     end
 
 endmodule

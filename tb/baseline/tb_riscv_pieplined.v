@@ -97,52 +97,67 @@ module tb_riscv_pipelined;
     // -----------------------------
     // wire [31:0] mem_word0 = DUT.DMEM.mem[0];
 
-    // -----------------------------
-    // Clock
-    // -----------------------------
+    // --------------------------------------------------
+    // Clock: 10 ns period
+    // --------------------------------------------------
     initial begin
         clk = 0;
         forever #5 clk = ~clk;
     end
 
-    // -----------------------------
-    // Reset and runtime
-    // -----------------------------
+    // --------------------------------------------------
+    // Reset and run
+    // The CRC program needs ~650 cycles (~6500 ns) to
+    // complete.  Run this simulation with "Run All" in
+    // Vivado (NOT "Run for 1000 ns") so $finish fires.
+    // --------------------------------------------------
     initial begin
-    rst = 1;
-    #20;
-    rst = 0;
+        rst = 1;
+        #20;
+        rst = 0;
 
-    wait (x31 == 32'd1);
-    #20;
+        // Wait until the program sets x31=1 (done flag)
+        wait (x31 === 32'd1);
+        #20;
+        $display("=== CRC-32 BASELINE DONE at %0t ns ===", $time);
+        $display("  CRC-32 result (x10) = 0x%08X", DUT.RF.regs[10]);
+        $display("  Instruction count   = %0d",     inst_count);
+        $finish;
+    end
 
-    $display("Final instruction count = %0d", inst_count);
-    $finish;
-end
-
-    // -----------------------------
-    // Console monitor
-    // -----------------------------
+    // Safety timeout - fires only if program fails to complete
     initial begin
-        $display("------------------------------------------------------------------------------------------------------------------------------------------------");
-        $display("time rst pc_current instr_if   if_id_instr rs1 rs2 rd reg1     reg2     imm      alu_result mem_data  wb_data   x1 x2 x3 x4 x5 x6 x7");
-        $display("------------------------------------------------------------------------------------------------------------------------------------------------");
+        #100000;
+        $display("TIMEOUT at %0t: x31=%0d x6=%0d x5=0x%h",
+                 $time, DUT.RF.regs[31], DUT.RF.regs[6], DUT.RF.regs[5]);
+        $finish;
+    end
 
-        $monitor("%4t  %b   %8h %8h %8h %2d %2d %2d %8h %8h %8h %8h %8h %8h %0d %0d %0d %0d %0d %0d %0d",
-                 $time, rst,
-                 pc_current,
-                 instr_if,
-                 if_id_instr,
-                 if_id_rs1,
-                 if_id_rs2,
-                 if_id_rd,
-                 reg_rdata1,
-                 reg_rdata2,
-                 imm_id,
-                 alu_result_ex,
-                 mem_read_data,
-                 wb_write_data,
-                 x1, x2, x3, x4, x5, x6, x7);
+    // === DIAGNOSTIC: verify correct source file is compiled ===
+    // Print instr_mem[18] and [19] - if the fix is compiled correctly:
+    //   mem[18] should be 0x00100F93 (addi x31, x0, 1)
+    //   mem[19] should be 0x00000013 (NOP)
+    //   mem[20] should be 0x0000006F (jal x0, 0)
+    initial begin
+        #1; // wait 1 ns so initial blocks settle
+        $display("=== INSTR MEM CONTENTS (verify correct compile) ===");
+        $display("  mem[17]=0x%08X (expect 0xFFF2C513 xori x10)", DUT.IMEM.mem[17]);
+        $display("  mem[18]=0x%08X (expect 0x00100F93 addi x31)",  DUT.IMEM.mem[18]);
+        $display("  mem[19]=0x%08X (expect 0x00000013 NOP)",        DUT.IMEM.mem[19]);
+        $display("  mem[20]=0x%08X (expect 0x0000006F jal)",        DUT.IMEM.mem[20]);
+        $display("  IF branch flush bug check - 2-flush lines removed? (check riscv_pipelined_top.v)");
+    end
+
+    // Heartbeat: print x6 (outer byte counter) every 500 ns
+    // so you can confirm the loop is running in the console
+    always #500 begin
+        if (!rst)
+            $display("  t=%0t: x5=0x%h x6=%0d x7=%0d x13=%0d",
+                     $time,
+                     DUT.RF.regs[5],
+                     DUT.RF.regs[6],
+                     DUT.RF.regs[7],
+                     DUT.RF.regs[13]);
     end
 
 endmodule

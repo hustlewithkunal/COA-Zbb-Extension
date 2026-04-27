@@ -207,6 +207,8 @@ module riscv_pipelined_top (
 
     always @(*) begin
         branch_taken_ex = 1'b0;
+        // With async IMEM: if_id_pc = pc_current = instruction's exact address.
+        // Standard RISC-V branch target: PC + sign-extended offset. No correction needed.
         branch_target_ex = id_ex_pc + id_ex_imm;
 
         if (id_ex_branch) begin
@@ -223,7 +225,7 @@ module riscv_pipelined_top (
 
         if (id_ex_jump) begin
             branch_taken_ex = 1'b1;
-            branch_target_ex = id_ex_pc + id_ex_imm; // JAL
+            branch_target_ex = id_ex_pc + id_ex_imm; // JAL: PC-relative
         end
 
         if (id_ex_jalr) begin
@@ -367,19 +369,21 @@ module riscv_pipelined_top (
             inst_count        <= 32'd0;
             branch_taken_ex_r <= 1'b0;
         end else begin
-            // Registered branch: covers synchronous IMEM 1-cycle lag
-            branch_taken_ex_r <= branch_taken_ex;
+            // With async IMEM: if_id_pc = pc_current is exact (no +4 lag).
+            // 1-flush is sufficient: kills the speculative instruction in IF/ID,
+            // then next cycle IMEM instantly delivers the branch target instruction.
+            branch_taken_ex_r <= branch_taken_ex; // kept for timing reference only
 
             // -----------------------------
-            // IF/ID
+            // IF/ID  (1-flush: kills speculative fetch from old PC+4)
             // -----------------------------
-            if (branch_taken_ex || branch_taken_ex_r) begin
+            if (branch_taken_ex) begin
                 if_id_pc    <= 32'd0;
                 if_id_pc4   <= 32'd0;
-                if_id_instr <= 32'h00000013; // flush as NOP (covers 2-cycle IMEM lag)
+                if_id_instr <= 32'h00000013; // NOP bubble
             end else if (if_id_enable) begin
-                if_id_pc    <= pc_current;
-                if_id_pc4   <= pc_plus4_if;
+                if_id_pc    <= pc_current;      // exact: async IMEM, no +4 lag
+                if_id_pc4   <= pc_plus4_if;     // pc+4 for JAL return address
                 if_id_instr <= instr_if;
             end
 

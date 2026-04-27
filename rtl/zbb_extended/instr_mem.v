@@ -29,6 +29,7 @@
 //   x12 = loaded byte
 //   x13 = bit counter
 //   x14 = CRC LSB
+//   x31 = done flag (set to 1 when program completes, triggers testbench)
 //
 // rev8 encoding: funct7=0110100, rs2=11000(shamt=24), funct3=101, op=0010011
 //   rev8 x10, x10 = 0x69855513
@@ -45,7 +46,7 @@ module instr_mem (
     output reg  [31:0] instr
 );
 
-    (* rom_style = "block" *) reg [31:0] mem [0:255];
+    reg [31:0] mem [0:255];  // async ROM - no BRAM, avoids 1-cycle IMEM lag
 
     integer i;
     initial begin
@@ -102,7 +103,8 @@ module instr_mem (
         mem[18] = 32'h69855513; // rev8 x10, x10           | byte-swap: [B3,B2,B1,B0]->[B0,B1,B2,B3]
         //                                                  | funct7=0110100, rs2=11000, funct3=101
 
-        mem[19] = 32'h0000006F; // jal  x0,  0             | halt
+        mem[19] = 32'h00100F93; // addi x31, x0, 1         | x31 = 1 (DONE flag - triggers testbench)
+        mem[20] = 32'h0000006F; // jal  x0,  0             | halt
 
         // -------------------------------------------------------
         // DATA SECTION at byte address 0xC8 = mem[50]
@@ -115,9 +117,10 @@ module instr_mem (
 
     end
 
-    // Synchronous read - BRAM-friendly, matches pipeline register timing
-    always @(posedge clk) begin
-        instr <= mem[addr[31:2]];
+    // Combinatorial (async) read - zero latency so if_id_pc = pc_current is exact
+    // and standard 1-flush branch handling works correctly without any -4 correction.
+    always @(*) begin
+        instr = mem[addr[31:2]];
     end
 
 endmodule
