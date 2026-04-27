@@ -77,8 +77,14 @@ To duplicate our exact LUT / FF logic reports without Vivado destroying the desi
 2. Right Click `riscv_resource_wrapper.v` $\rightarrow$ **Set as Top**.
 3. Under the constraints manager (XDC), add a simple clock constraint:
    `create_clock -period 10.000 -name sys_clk -waveform {0.000 5.000} [get_ports clk]`
-4. Click **Run Implementation**.
+4. Click **Run Implementation**.b
 5. When finished, open the Implemented Design and run `report_utilization` and `report_timing_summary` to view the core scaling.
+
+### 5. On-Silicon Hardware Validation (ILA)
+To prove the physical execution of the CPU on actual silicon, we embedded an **Integrated Logic Analyzer (ILA)** core into the top-level FPGA design (`riscv_fpga_top.v`). 
+1. The ILA probes critical pipeline signals: `pc_out`, `instr_out`, `alu_out`, and `wb_out`.
+2. The trigger is set to `0x0000006F` (`jal x0, 0`), which captures the exact moment the benchmark finishes execution.
+3. Once triggered, the physical waveform is extracted directly from the Zybo Z7-10 chip at 100MHz, matching the behavioral simulation perfectly (including NOP pipeline bubbles) and guaranteeing structural success.
 
 ---
 
