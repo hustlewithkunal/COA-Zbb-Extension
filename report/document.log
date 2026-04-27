@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.4.13)  27 APR 2026 14:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.4.13)  27 APR 2026 15:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -537,7 +537,18 @@ File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <8> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 129.
 
-[2] [3] [4]
+[2] [3]
+<figures/arch.png, id=178, 2826.56pt x 1541.76pt>
+File: figures/arch.png Graphic file (type png)
+<use figures/arch.png>
+Package pdftex.def Info: figures/arch.png  used on input line 302.
+(pdftex.def)             Requested size: 252.0pt x 137.43498pt.
+<figures/ila_image.png, id=180, 1166.10657pt x 569.87906pt>
+File: figures/ila_image.png Graphic file (type png)
+<use figures/ila_image.png>
+Package pdftex.def Info: figures/ila_image.png  used on input line 309.
+(pdftex.def)             Requested size: 252.0pt x 123.14769pt.
+ [4 <./figures/arch.png> <./figures/ila_image.png>]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -557,33 +568,31 @@ LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
 Package rerunfilecheck Info: File `document.out' has not changed.
-(rerunfilecheck)             Checksum: ACDEB39E13F201BF7888E23E632418EA;4452.
+(rerunfilecheck)             Checksum: 3713826799328E0360257F8FB56C96B4;4566.
  ) 
 Here is how much of TeX's memory you used:
- 12963 strings out of 467871
- 199029 string characters out of 5418376
- 920463 words of memory out of 5000000
- 41600 multiletter control sequences out of 15000+600000
+ 12971 strings out of 467871
+ 199262 string characters out of 5418376
+ 912216 words of memory out of 5000000
+ 41610 multiletter control sequences out of 15000+600000
  742276 words of font info for 153 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,9n,79p,1259b,2007s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,1276b,2007s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/mitta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmmi10.pfb><C:/Users/mitta/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmmi8.pfb><C:/Users/mitta/AppData/Local/Programs/MiKTeX/fonts/type1/pu
-blic/amsfonts/cm/cmr10.pfb><C:/Users/mitta/AppData/Local/Programs/MiKTeX/fonts/
-type1/public/amsfonts/cm/cmr8.pfb><C:/Users/mitta/AppData/Local/Programs/MiKTeX
-/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/mitta/AppData/Local/Progra
-ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/mitta/AppData/Loca
-l/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/mitta/AppData/Lo
-cal/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/mitta/AppData/
-Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/mitta/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/mitta/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/mitta/AppD
-ata/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/mitta/AppD
-ata/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on document.pdf (5 pages, 198007 bytes).
+fonts/cm/cmr10.pfb><C:/Users/mitta/AppData/Local/Programs/MiKTeX/fonts/type1/pu
+blic/amsfonts/cm/cmsy10.pfb><C:/Users/mitta/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/mitta/AppData/Local/Programs/MiKT
+eX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/mitta/AppData/Local/Programs/Mi
+KTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/mitta/AppData/Local/Programs/
+MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/mitta/AppData/Local/Progra
+ms/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/mitta/AppData/Local/Progra
+ms/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/mitta/AppData/Local/Progr
+ams/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/mitta/AppData/Local/Progr
+ams/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on document.pdf (5 pages, 4078789 bytes).
 PDF statistics:
- 275 PDF objects out of 1000 (max. 8388607)
- 82 named destinations out of 1000 (max. 500000)
- 233 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 268 PDF objects out of 1000 (max. 8388607)
+ 80 named destinations out of 1000 (max. 500000)
+ 243 words of extra memory for PDF output out of 10000 (max. 10000000)
 
