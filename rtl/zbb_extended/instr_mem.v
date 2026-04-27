@@ -103,8 +103,12 @@ module instr_mem (
         mem[18] = 32'h69855513; // rev8 x10, x10           | byte-swap: [B3,B2,B1,B0]->[B0,B1,B2,B3]
         //                                                  | funct7=0110100, rs2=11000, funct3=101
 
-        mem[19] = 32'h00100F93; // addi x31, x0, 1         | x31 = 1 (DONE flag - triggers testbench)
-        mem[20] = 32'h0000006F; // jal  x0,  0             | halt
+        // Popcount of CRC result — ZBB does this in ONE instruction!
+        // Baseline needs Kernighan's loop (~49 register-write instructions).
+        mem[19] = 32'h60251713; // cpop x14, x10            | x14 = popcount(x10)
+
+        mem[20] = 32'h00100F93; // addi x31, x0, 1         | x31 = 1 (DONE flag)
+        mem[21] = 32'h0000006F; // jal  x0,  0             | halt
 
         // -------------------------------------------------------
         // DATA SECTION at byte address 0xC8 = mem[50]

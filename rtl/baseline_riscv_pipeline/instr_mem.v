@@ -115,9 +115,26 @@ module instr_mem (
         mem[27] = 32'h00881813; // slli x16, x16, 8        | x16 = [0, 0, B2, 0]
         mem[28] = 32'h0107E533; // or   x10, x15, x16     | x10 = [B0, B1, B2, B3] ✓
 
+        // -------------------------------------------------------
+        // POPCOUNT of CRC result (Kernighan's bit-counting)
+        //
+        // Computes Hamming weight of x10 (byte-swapped CRC) into x14.
+        // Uses Kernighan's trick: x & (x-1) clears lowest set bit.
+        // Loops once per set bit → ~16 iterations for a typical CRC-32.
+        //
+        // Baseline: 1 + 3×popcount iterations ≈ 49 register-write instructions
+        // ZBB: single cpop instruction (1 register-write instruction)
+        // -------------------------------------------------------
+        mem[29] = 32'h00000713; // addi x14, x0,  0       | x14 = 0 (popcount counter)
+        mem[30] = 32'h02050463; // beq  x10, x0,  20      | if x10==0, skip to mem[35] (done)
+        mem[31] = 32'h00170713; // addi x14, x14, 1       | x14++ (count one set bit)
+        mem[32] = 32'hFFF50813; // addi x16, x10, -1      | x16 = x10 - 1
+        mem[33] = 32'h01057533; // and  x10, x10, x16     | x10 &= (x10-1), clears lowest set bit
+        mem[34] = 32'hFE051AE3; // bne  x10, x0,  -12     | if x10!=0, loop to mem[31]
+
         // --- Done flag + halt ---
-        mem[29] = 32'h00100F93; // addi x31, x0,  1       | x31 = 1  (DONE flag)
-        mem[30] = 32'h0000006F; // jal  x0,  0             | halt (infinite loop)
+        mem[35] = 32'h00100F93; // addi x31, x0,  1       | x31 = 1  (DONE flag)
+        mem[36] = 32'h0000006F; // jal  x0,  0             | halt (infinite loop)
 
         // -------------------------------------------------------
         // DATA SECTION at byte address 0xC8 = mem[50]
