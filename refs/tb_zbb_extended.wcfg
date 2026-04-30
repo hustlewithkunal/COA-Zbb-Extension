@@ -12,12 +12,12 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="305.001 ns"></ZoomEndTime>
-      <Cursor1Time time="305.000 ns"></Cursor1Time>
+      <ZoomEndTime time="105.001 ns"></ZoomEndTime>
+      <Cursor1Time time="105.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="217"></NameColumnWidth>
-      <ValueColumnWidth column_width="261"></ValueColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="59" />
    <wvobject fp_name="/tb_riscv_pipelined/clk" type="logic">
@@ -47,6 +47,8 @@
    <wvobject fp_name="/tb_riscv_pipelined/inst_count" type="array">
       <obj_property name="ElementShortName">inst_count[31:0]</obj_property>
       <obj_property name="ObjectShortName">inst_count[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_riscv_pipelined/pc_current" type="array">
       <obj_property name="ElementShortName">pc_current[31:0]</obj_property>

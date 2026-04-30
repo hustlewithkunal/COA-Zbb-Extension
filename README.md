@@ -37,15 +37,15 @@ We compiled two benchmark kernels: an raw **Unrolled Popcount Algorithm** and a 
 *Insight:* By replacing a ~49-instruction software loop with a single hardware `cpop` instruction, and an 11-instruction software sequence with `rev8`, execution time drops fundamentally.
 
 ### 2. FPGA Resource and Timing Post-Implementation
-Target Board: **Zybo Z7-10 (xc7z010clg400-1)** | Clock Target: **100MHz (10 ns)**
+Target Board: **Zybo Z7-10 (xc7z010clg400-1)** | Clock Target: **12ns (83.33 MHz)**
 
-| Metric | Baseline Core | Zbb Core | Net Change |
+| Metric | Baseline Core (12ns) | Zbb Core (12ns) | Net Change |
 | :--- | :--- | :--- | :--- |
-| **LUT Logic Size** | 1389 | 1247 | **`-10.22%`** |
-| **Flip-Flops** | 866 | 812 | **`-6.24%`** |
-| **Crit. Path Penalty** | (Setup: 0.224ns) | (Setup: 0.217ns) | **`-0.007ns`** |
+| **LUT Logic Size** | 2961 | 3180 | **`+7.39%`** |
+| **Flip-Flops** | 1646 | 1647 | **`+0.06%`** |
+| **Crit. Path Delay** | 11.649ns (WNS: +0.351ns) | 11.739ns (WNS: +0.261ns) | **`+0.090ns Penalty`** |
 
-*Hardware Insight:* Normally, adding logic elements to the ALU inflates LUT size. However, the exact opposite happened! Because our ZBB assembly instructions condense massive software branches into just a few lines of code, Vivado was able to drastically down-scale the instantiated Instruction Memory ROM. **The savings in code density completely offset the logic complexity of the ALU extension**, shrinking the complete core by ~10% effectively for "free" while incurring an unnoticeable 7-picosecond critical-path penalty.
+*Hardware Insight:* As expected, integrating complex hardware elements into the Execute stage (such as a 32-bit adder tree for `cpop` and priority encoders for `clz`/`ctz`) increases the physical size of the ALU. The overall core logic grew by ~7.4% in LUTs, and the critical path deepened by 90 picoseconds. However, these minor hardware penalties completely eradicate massive software execution bottlenecks, proving the Zbb subset is a highly efficient architectural trade-off that vastly improves performance at a minimal and easily justifiable hardware cost.
 
 ---
 
