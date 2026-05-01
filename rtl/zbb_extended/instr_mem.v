@@ -14,7 +14,8 @@
 // =============================================================
 
 // ===== SELECT PROGRAM (uncomment ONE) =====
-`define PROGRAM_CRC
+`define PROGRAM_TABLE1
+//`define PROGRAM_CRC
 //`define PROGRAM_POPCOUNT
 // ==========================================
 
@@ -31,7 +32,33 @@ module instr_mem (
         for (i = 0; i < 256; i = i + 1)
             mem[i] = 32'h00000013;  // default NOP
 
-`ifdef PROGRAM_CRC
+`ifdef PROGRAM_TABLE1
+        // ==========================================================
+        // PROGRAM 0: ZBB TABLE I VERIFICATION
+        // Executes the Zbb instructions to generate the Table I results
+        // in registers x5 through x16.
+        // ==========================================================
+        mem[ 0] = 32'h00100093; // addi x1, x0, 1
+        mem[ 1] = 32'hFFF00113; // addi x2, x0, -1
+        mem[ 2] = 32'h0FF00193; // addi x3, x0, 255
+        mem[ 3] = 32'h00F00213; // addi x4, x0, 15
+        mem[ 4] = 32'h01000893; // addi x17, x0, 16
+        mem[ 5] = 32'h60001293; // clz x5, x0        (32)
+        mem[ 6] = 32'h60101313; // ctz x6, x0        (32)
+        mem[ 7] = 32'h60201393; // cpop x7, x0       (0)
+        mem[ 8] = 32'h60009413; // clz x8, x1        (31)
+        mem[ 9] = 32'h60109493; // ctz x9, x1        (0)
+        mem[10] = 32'h60209513; // cpop x10, x1      (1)
+        mem[11] = 32'h60019593; // clz x11, x3       (24)
+        mem[12] = 32'h60221613; // cpop x12, x4      (4)
+        mem[13] = 32'h60189693; // ctz x13, x17      (4)
+        mem[14] = 32'h4010F733; // andn x14, x1, x1  (0)
+        mem[15] = 32'h4020E7B3; // orn x15, x1, x2   (0)
+        mem[16] = 32'h60211813; // cpop x16, x2      (32)
+        mem[17] = 32'h00100F93; // addi x31, x0, 1   (DONE)
+        mem[18] = 32'h0000006F; // jal x0, 0         (halt)
+
+`elsif PROGRAM_CRC
         // ==========================================================
         // PROGRAM 1: CRC-32 over 8 bytes (ZBB EXTENDED)
         //
